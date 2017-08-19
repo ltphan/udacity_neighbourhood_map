@@ -8,13 +8,14 @@
 <body>
     
     <!-- List view showing location names -->
-    <ul data-bind="foreach: intialLocations">
-        <li data-bind="text: title, visible: visible"></li>
+    <ul data-bind="foreach: listingList">
+        <li data-bind="text: name"></li>
     </ul>
+
+    <div id="map"></div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
 	<script src="js/app.js"></script>
-	<!-- Load google maps API
-		 https://developers.google.com/maps/documentation/javascript/examples/map-simple -->
+	<script aysnc defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXZyDgyAelkffDb7NBlNdl_V4cYxMnc8U&callback=initMap"></script>
 </body>
 </html>

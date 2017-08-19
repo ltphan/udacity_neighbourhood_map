@@ -21,15 +21,30 @@ var initialLocations = [
   }
 ]
 
-var ViewModel = function(initialLocations) {
-    this.initialLocations = ko.observableArray(initialLocations);
+var map;
 
+function initMap() {
+  console.log("map printed");
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 49.2827291, lng: -123.1207375},
+    zoom: 8
+  });
+}
 
-    this.initialLocations().forEach(function(location) {
-      location.visible = ko.observable(true);
+var listing = function(data) {
+  this.name = ko.observable(data.name);
+  this.location = ko.observable(data.location);
+}
+
+var ViewModel = function() {
+    var self = this;
+
+    this.listingList = ko.observableArray([]);
+
+    initialLocations.forEach(function(listingItem){
+      self.listingList.push(new listing(listingItem));
     });
-
-  };
+  }
 
   var vm = new ViewModel();
 
