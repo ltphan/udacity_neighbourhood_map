@@ -5,6 +5,11 @@ html, body {
     padding: 0;
 }
 
-#map {
-    height: 100%;
+.map {
+  bottom: 0px;
+  height: 100%;
+  display: inline-block;
+  left: 362px;
+  position: absolute;
+  right: 0px;
 }
