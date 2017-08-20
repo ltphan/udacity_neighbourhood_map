@@ -71,8 +71,9 @@ function populateInfoWindow(marker,infoWindow) {
   // foursquare information
   var CLIENT_ID = 'F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4';
   var CLIENT_SECRET = 'CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV';
+  var url = 'https://api.foursquare.com/v2/venues/venues/search?ll=' + ;
 
-  
+
 
   
 }
