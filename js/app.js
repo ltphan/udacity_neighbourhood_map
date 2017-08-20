@@ -1,4 +1,6 @@
-var initialLocations = [
+// Model
+
+var locations = [
   {
       name: 'Ajisai Sushi Restaurant',
       location: {lat: 49.233934, lng: -123.1536816}
@@ -21,7 +23,11 @@ var initialLocations = [
   }
 ]
 
+// Mapper between model and view
+
 var map;
+var markers = [];
+var infoWindow;
 
 function initMap() {
   console.log("map printed");
@@ -32,7 +38,49 @@ function initMap() {
   });
 }
 
-var listing = function(data) {
+
+var Location = function(data) {
+  var self = this;
+  self.name = data.name;
+  self.lat = data.lat;
+  self.lng = data.lng;
+  self.fourSquareID = data.fourSquareID;
+}
+
+function setMarkers(locations) {
+  locations.forEach(function(location) {
+    var positions = {lat: location.lat, lng: location.lng};
+    var name = location.name;
+    location.infoWindow = new google.maps.InfoWindow();
+    location.marker = new google.maps.Makrer({
+      map: map,
+      position: position,
+      title: name,
+      animation: google.maps.Animation.DROP
+    })
+
+    markers.push(location.marker);
+    location.marker.addListener('click', function() {
+      populateInfoWindow(this, largeInfoWindow);
+    })
+  });
+}
+
+function populateInfoWindow(marker,infoWindow) {
+
+  // foursquare information
+  var CLIENT_ID = 'F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4';
+  var CLIENT_SECRET = 'CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV';
+
+  
+
+  
+}
+
+
+// View
+
+var Listing = function(data) {
   this.name = ko.observable(data.name);
   this.location = ko.observable(data.location);
 }
@@ -42,8 +90,8 @@ var ViewModel = function() {
 
     this.listingList = ko.observableArray([]);
 
-    initialLocations.forEach(function(listingItem){
-      self.listingList.push(new listing(listingItem));
+    locations.forEach(function(listingItem){
+      self.listingList.push(new Listing(listingItem));
     });
   }
 

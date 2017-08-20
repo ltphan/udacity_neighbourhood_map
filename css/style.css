@@ -5,7 +5,7 @@ html, body {
     padding: 0;
 }
 
-.map {
+#map {
   bottom: 0px;
   height: 100%;
   display: inline-block;
