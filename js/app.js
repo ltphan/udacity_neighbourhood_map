@@ -36,43 +36,56 @@ function initMap() {
     mapTypeControl: false
   });
   setMarkers(locations, vm);
+ 
 }
 
 function setMarkers(locations,vm) {
   locations.forEach(function(location, i) {
-    console.log(location);
+    //console.log(location);
     var position = {lat: location.position.lat, lng: location.position.lng};
     var name = location.name;
-   // location.infoWindow = new google.maps.InfoWindow();
     marker = new google.maps.Marker({
       map: map,
       position: position,
       title: name,
       animation: google.maps.Animation.DROP
     })
-
-   vm.listingList()[i].marker = marker;
+    vm.locationList()[i].marker = marker;
+    //var bounds = new google.maps.LatLngBounds();
 
     markers.push(location.marker);
+    //bounds.extend(location.marker.position);
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfoWindow);
+      populateInfoWindow(this, infoWindow);
     })
+    //map.fitBounds(bounds);
   });
+  
 }
 
-function populateInfoWindow(marker,infoWindow) {
+function populateInfoWindow(marker, infoWindow) {
+
+  if (infoWindow.marker != marker) {
+    infoWindow.marker = marker;
+    infoWindow.setContent('<div>' + marker.title + '<div>');
+    infoWindow.open(map, marker);
+    infoWindow.addListener('closeclick', function(){
+      infoWindow.setMarker = null;
+    });
+  }
 
   // foursquare information
-  var CLIENT_ID = 'F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4';
-  var CLIENT_SECRET = 'CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV';
+  // var CLIENT_ID = 'F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4';
+  // var CLIENT_SECRET = 'CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV';
  // var url = 'https://api.foursquare.com/v2/venues/venues/search?ll=' + ;
+
   
 }
 
 
 // View
 
-var Listing = function(data) {
+var Location = function(data) {
   var self = this;
   this.location = data.location;
   self.name = data.name;
@@ -84,10 +97,10 @@ var Listing = function(data) {
 var ViewModel = function() {
     var self = this;
 
-    this.listingList = ko.observableArray([]);
+    this.locationList = ko.observableArray([]);
 
-    locations.forEach(function(listingItem){
-      self.listingList.push(new Listing(listingItem));
+    locations.forEach(function(locationItem){
+      self.locationList.push(new Location(locationItem));
     });
   }
 
