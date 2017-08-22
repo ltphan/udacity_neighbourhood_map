@@ -1,45 +1,75 @@
-// Model
-
-var locations = [
-  {
-      name: 'Ajisai Sushi Restaurant',
-      position: {lat: 49.233934, lng: -123.1536816}
-  },
-  {
-      name: 'Doplan Korean Restuarant',
-      position: {lat: 49.1856592, lng: -123.1292477}
-  },
-  {
-      name: 'Nightingale Restaurant',
-      position: {lat: 49.2874341, lng: -123.1175606}
-  },
-  {
-      name: 'Hoi An Cafe',
-      position: {lat: 49.2388517, lng: -123.0652127}
-  },
-  {
-      name: 'Jam Cafe',
-      position: {lat: 49.2802619, lng: -123.1096419}
-  }
-]
-
-// Mapper between model and view
-
 var map;
+var marker;
 var markers = [];
 var infoWindow;
 
+// error message if the Google maps page does not load
+function mapError() {
+  alert("The Google Maps API was not able to load.");
+}
+
+// loads Google map on page using Google Maps API
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 49.245, lng: -123.1207375},
     zoom: 12,
     mapTypeControl: false
   });
+
   setMarkers(locations, vm);
   populateInfoWindow(marker,infoWindow);
 
- 
+  }
+
+// location constructor that includes setting the markers, defines location
+// properties, and information window for each location
+function LocationModel(listing, vm) {
+  var self = this;
+  self.name = listing.name;
+  self.position = {lat: listing.location.lat, lng: listing.location.lng};
+  self.address = listing.location.city;
+  self.state = listing.location.state;
+  self.zip = listing.location.postalCode;
+  self.phone = listing.contact.formattedPhone;
+  self.venueID = listing.id;
+  
+  function fourSquareCalls(listings) {
+    var url = 'https://api.foursquare.com/v2/venues/search?ll=49.245,-123.1207375&client_id=F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4&client_secret=CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV&v=20170822&limit=40';
+    
+    $.ajax({
+      method: "GET",
+      dataType: "json",
+      url: url
+    }).done(function(data) {
+      var locations = data.response.venues;
+      locations.forEach(function(location, l) {
+        vm.listings.push(new LocationModel(location,vm));
+      });
+        vm.errorMsg("");
+    }).fail(function() {
+    vm.errorMsg("Foursquare data not able to load");
+  });
 }
+
+  self.setMarkers = ko.computed(function() {
+    marker = new google.maps.Marker({
+      map: map,
+      position: self.position,
+      title: self.name,
+      visible: true,
+      animation: google.maps.Animation.DROP
+    });
+    self.marker.setVisible(true);
+
+    self.infoWindow = ko.computed(function(){
+
+    })
+
+  })
+
+}
+
+
 
 function setMarkers(locations,vm) {
   locations.forEach(function(location, i) {
@@ -63,16 +93,16 @@ function setMarkers(locations,vm) {
   
 }
 
-function populateInfoWindow(marker, infoWindow) {
+// function populateInfoWindow(marker, infoWindow) {
 
-  if (infoWindow.marker != marker) {
-    infoWindow.marker = marker;
-    infoWindow.setContent('<div>' + marker.title + '<div>');
-    infoWindow.open(map, marker);
-    infoWindow.addListener('closeclick', function(){
-      infoWindow.setMarker = null;
-    });
-  }
+//   if (infoWindow.marker != marker) {
+//     infoWindow.marker = marker;
+//     infoWindow.setContent('<div>' + marker.title + '<div>');
+//     infoWindow.open(map, marker);
+//     infoWindow.addListener('closeclick', function(){
+//       infoWindow.setMarker = null;
+//     });
+//   }
 
   // foursquare information
   // var CLIENT_ID = 'F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4';
@@ -80,18 +110,10 @@ function populateInfoWindow(marker, infoWindow) {
  // var url = 'https://api.foursquare.com/v2/venues/venues/search?ll=' + ;
 
   
-}
+// }
 
 
-// View
 
-var LocationModel = function(data) {
-  var self = this;
-  self.name = data.name;
-  self.lat = data.position.lat;
-  self.lng = data.position.lng;
-  self.fourSquareID = data.fourSquareID;
-}
 
 var ViewModel = function() {
     var self = this;
