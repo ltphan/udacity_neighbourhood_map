@@ -36,7 +36,8 @@ function initMap() {
     mapTypeControl: false
   });
   setMarkers(locations, vm);
-  infowindow = new google.maps.InfoWindow();
+  populateInfoWindow(marker,infoWindow);
+
  
 }
 
@@ -52,6 +53,7 @@ function setMarkers(locations,vm) {
       animation: google.maps.Animation.DROP
     })
     vm.locationList()[i].marker = marker;
+    infowindow = new google.maps.InfoWindow();
 
     markers.push(location.marker);
     marker.addListener('click', function() {
@@ -83,9 +85,8 @@ function populateInfoWindow(marker, infoWindow) {
 
 // View
 
-var Location = function(data) {
+var LocationModel = function(data) {
   var self = this;
-  self.location = data.location;
   self.name = data.name;
   self.lat = data.position.lat;
   self.lng = data.position.lng;
@@ -98,7 +99,7 @@ var ViewModel = function() {
     this.locationList = ko.observableArray([]);
 
     locations.forEach(function(locationItem){
-      self.locationList.push(new Location(locationItem));
+      self.locationList.push(new LocationModel(locationItem));
     });
   }
 
