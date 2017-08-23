@@ -16,8 +16,6 @@ function initMap() {
     mapTypeControl: false
   });
 
-  setMarkers(locations, vm);
-  populateInfoWindow(marker,infoWindow);
 
   }
 
@@ -33,87 +31,46 @@ function LocationModel(listing, vm) {
   self.phone = listing.contact.formattedPhone;
   self.venueID = listing.id;
   
-  function fourSquareCalls(listings) {
-    var url = 'https://api.foursquare.com/v2/venues/search?ll=49.245,-123.1207375&client_id=F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4&client_secret=CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV&v=20170822&limit=40';
+function fourSquareCalls(listings) {
+  var url = 'https://api.foursquare.com/v2/venues/search?ll=49.245,-123.1207375&client_id=F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4&client_secret=CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV&v=20170822&limit=40';
     
-    $.ajax({
-      method: "GET",
-      dataType: "json",
-      url: url
-    }).done(function(data) {
-      var locations = data.response.venues;
-      locations.forEach(function(location, l) {
-        vm.listings.push(new LocationModel(location,vm));
-      });
-        vm.errorMsg("");
-    }).fail(function() {
+  $.ajax({
+    method: "GET",
+    dataType: "json",
+    url: url
+  }).done(function(data) {
+    var locations = data.response.venues;
+    locations.forEach(function(location, l) {
+    vm.listings.push(new LocationModel(location,vm));
+  });
+    vm.errorMsg("");
+  }).fail(function() {
     vm.errorMsg("Foursquare data not able to load");
   });
 }
-
-  self.setMarkers = ko.computed(function() {
-    marker = new google.maps.Marker({
-      map: map,
-      position: self.position,
-      title: self.name,
-      visible: true,
-      animation: google.maps.Animation.DROP
-    });
-    self.marker.setVisible(true);
-
-    self.infoWindow = ko.computed(function(){
-
-    })
-
-  })
-
 }
 
+// function setMarkers(locations,vm) {
+//   locations.forEach(function(location, i) {
+//     //console.log(location);
+//     var position = {lat: location.position.lat, lng: location.position.lng};
+//     var name = location.name;
+//     marker = new google.maps.Marker({
+//       map: map,
+//       position: position,
+//       title: name,
+//       animation: google.maps.Animation.DROP
+//     })
+//     vm.locationList()[i].marker = marker;
+//     infowindow = new google.maps.InfoWindow();
 
-
-function setMarkers(locations,vm) {
-  locations.forEach(function(location, i) {
-    //console.log(location);
-    var position = {lat: location.position.lat, lng: location.position.lng};
-    var name = location.name;
-    marker = new google.maps.Marker({
-      map: map,
-      position: position,
-      title: name,
-      animation: google.maps.Animation.DROP
-    })
-    vm.locationList()[i].marker = marker;
-    infowindow = new google.maps.InfoWindow();
-
-    markers.push(location.marker);
-    marker.addListener('click', function() {
-      populateInfoWindow(this, infoWindow);
-    })
-  });
-  
-}
-
-// function populateInfoWindow(marker, infoWindow) {
-
-//   if (infoWindow.marker != marker) {
-//     infoWindow.marker = marker;
-//     infoWindow.setContent('<div>' + marker.title + '<div>');
-//     infoWindow.open(map, marker);
-//     infoWindow.addListener('closeclick', function(){
-//       infoWindow.setMarker = null;
-//     });
-//   }
-
-  // foursquare information
-  // var CLIENT_ID = 'F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4';
-  // var CLIENT_SECRET = 'CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV';
- // var url = 'https://api.foursquare.com/v2/venues/venues/search?ll=' + ;
-
+//     markers.push(location.marker);
+//     marker.addListener('click', function() {
+//       populateInfoWindow(this, infoWindow);
+//     })
+//   });
   
 // }
-
-
-
 
 var ViewModel = function() {
     var self = this;
