@@ -10,7 +10,7 @@ function mapError() {
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 49.245, lng: -123.1207375},
-    zoom: 12,
+    zoom: 16,
     mapTypeControl: false
   });
   infoWindow = new google.maps.InfoWindow();
@@ -56,18 +56,31 @@ function LocationModel(listing) {
     animation: google.maps.Animation.DROP
   })
   
+  // self.infoWindow = new google.maps.InfoWindow({
+  //   return 
+  // });
+
   // set markers on the Google map
   self.marker.addListener('click', function() {
     infoWindow.setContent(self.name);
     infoWindow.open(map,this);
   })
 
+
 }
 
-var ViewModel = function() {
-    var self = this;
 
-    this.locationList = ko.observableArray([]);
+var ViewModel = function(LocationModel) {
+    var self = this;
+    self.query = ko.observable('');
+    self.locationList = ko.observableArray('');
+
+    self.filterLocations = ko.computed(function() {
+      var filter = self.filter();
+      if (!filter) {
+        alert("not printing");
+      }
+    })
 
   }
 
