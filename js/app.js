@@ -1,5 +1,7 @@
 var map;
 var infoWindow;
+var markers = [];
+
 
 // error message if the Google maps page does not load
 function mapError() {
@@ -40,21 +42,23 @@ function initMap() {
 
 // location constructor that includes setting the markers, defines location
 // properties, and information window for each location
-function LocationModel(listing) {
+function LocationModel(location) {
   var self = this;
-  self.name = listing.name;
-  self.position = {lat: listing.location.lat, lng: listing.location.lng};
-  self.address = listing.location.city;
-  self.state = listing.location.state;
-  self.zip = listing.location.postalCode;
-  self.phone = listing.contact.formattedPhone;
-  self.venueID = listing.id;
+  self.name = location.name;
+  self.position = {lat: location.location.lat, lng: location.location.lng};
+  self.address = location.location.city;
+  self.state = location.location.state;
+  self.zip = location.location.postalCode;
+  self.phone = location.contact.formattedPhone;
+  self.venueID = location.id;
   self.marker = new google.maps.Marker({
     map: map,
     position: self.position,
     title: self.name,
     animation: google.maps.Animation.DROP
   })
+  markers.push(self.marker);
+  //self.location[i].marker = self.marker
   
   // self.infoWindow = new google.maps.InfoWindow({
   //   return 
@@ -69,19 +73,35 @@ function LocationModel(listing) {
 
 }
 
-
+// displaying the points on Google Maps
 var ViewModel = function(LocationModel) {
     var self = this;
-    self.query = ko.observable('');
-    self.locationList = ko.observableArray('');
+    self.query = ko.observable();
+    self.locationList = ko.observableArray([]);
 
-    self.filterLocations = ko.computed(function() {
-      var filter = self.filter();
+    // filtering the list of locations based on user's input
+    self.filteredList = ko.computed(function() {
+      var filter = self.query();
       if (!filter) {
-        alert("not printing");
+        self.locationList().forEach(function(location) {
+          if (location.marker) {
+            location.marker.setVisible(true);
+          }
+        });
+        return self.locationList()
+      } else {
+        return ko.utils.arrayFilter(self.locationList(), function(location) {
+          if (location.marker) {
+            location.marker.setVisible(true);
+          } else {
+            location.marker.setVisible(false);
+            return false;
+          }
+        });
       }
-    })
-
+    }, self.animateMarker = function(location){
+      google.maps.event.trigger(location.marker, 'click');
+    });
   }
 
   var vm = new ViewModel();
