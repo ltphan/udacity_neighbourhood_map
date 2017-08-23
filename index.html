@@ -8,21 +8,20 @@
 	<title>Linh's Neighborhood Map Project</title>
 </head>
 <body>
-      
+
     <div class="informationWindow-container">
         <ul class="location-list" data-bind="foreach: locationList">
             <li class="location">
                 <div class="listing-name" data-bind="text: name"></div>
-                <div class="listing-address" data-bind="text: fullAddress, visible: fullAddress"></div>
-                <div class="listing-phone" data-bind="text: phone, visible: phone"></div>
             </li>
         </ul>
     </div>
-            
+
     <div class="google-map-wrapper">
         <div id="map"></div>
     </div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS9Ffs2NQ0mt2Git6DtqIoRFDYsJrdO2w&callback=initMap" oneerror="mapError()"
     async defer></script>
