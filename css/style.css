@@ -1,8 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
 html, body {
     font-family: Arial, sans-serif;
     height: 100%;
     margin: 0;
     padding: 0;
+}
+
+body {
+  overflow-y: hidden;
 }
 
 #map {
@@ -12,4 +20,19 @@ html, body {
   left: 362px;
   position: absolute;
   right: 0px;
+}
+
+@media screen and (max-width: 765px) {
+
+  .map-wrapper {
+    width: 65%;
+    margin-left: 35%;
+  }
+
+
+
+  .map-wrapper {
+    width: 100%;
+    margin: 0;
+  }
 }

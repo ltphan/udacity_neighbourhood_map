@@ -9,21 +9,18 @@
 	<title>Linh's Neighborhood Map Project</title>
 </head>
 <body>
-    <h1> Linh's Neighborhood Project </h1>
-    <div class="row">
-        <div class="col-lg-6">
+    <h1> Vancouver Listings </h1>
+    <div class="sidebar">
+        <!-- <div class="col-lg-6"> -->
           <div class="input-group">
             <input id="filter-text-box" class="text-input-box" type="text" class="form-control" placeholder="Search" data-bind="textInput: query, valueUpdate: 'keydown'" aria-label="Search for...">
-            <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button">Go!</button>
-            </span>
           </div>
-        </div>
+        <!-- </div> -->
       </div>
 
     <div class="informationWindow-container">
         <ul class="location-list" data-bind="foreach: filteredList">
-            <li class="location">
+            <li class="location" data-bind:"visible: locationList">
                 <div class="listing-name" data-bind="text: name"></div>
             </li>
         </ul>

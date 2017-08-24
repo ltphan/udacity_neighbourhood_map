@@ -22,7 +22,7 @@ function initMap() {
 
 // retrieving locations from Foursquare API 
   function fourSquareCalls() {
-    var url = 'https://api.foursquare.com/v2/venues/search?ll=49.245,-123.1207375&client_id=F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4&client_secret=CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV&v=20170822&limit=40';
+    var url = 'https://api.foursquare.com/v2/venues/search?ll=49.245,-123.1207375&client_id=F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4&client_secret=CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV&v=20170822&limit=20';
       
     $.ajax({
       method: "GET",
@@ -59,44 +59,25 @@ function LocationModel(location) {
   })
   markers.push(self.marker);
   
-  var website = function(location) {
-    return self.website = '<a href="' + self.website + '"target="_blank">Visit Website</a>' + '<br>';
-    console.log(website);
-  }
-
-  var contentString = function(location) {
-    
-  }
-
-  // creating location information content with name, 
-  // address, state, postal code, phone, and website 
-//   self.infoWindow = new google.maps.InfoWindow({
-//    content: '<div id="content">' + '<div id="siteNotice">' +
-//    '</div>' + 
-//    '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
-//    '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
-//    + '<br>' + self.phone + '<br>' + '</p>' + 
-//    '</div>' + self.website + '</div>'
-//  })
+  // var website = function(location) {
+  //   return self.website = '<a href="' + self.website + '"target="_blank">Visit Website</a>' + '<br>';
+  //   console.log(website);
+  // }
 
   self.contentString = '<div id="content">' + '<div id="siteNotice">' +
       '</div>' + 
-      '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
+      '<h1 id="firstHeading" class="firstHeading">' + self.name + '</h1>' +
       '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
-      + '<br>' + self.phone + '<br>' + '</p>' + 
-      '</div>' + self.website + '</div>'
+      + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>'
+      //'</div>' + self.website + '</div>'
 
   self.infoWindow = new google.maps.InfoWindow({content: self.contentString});
 
+  
+
   // set markers on the Google map alongside with its information content
   self.marker.addListener('click', function() {
-    self.contentString = '<div id="content">' + '<div id="siteNotice">' +
-    '</div>' + 
-    '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
-    '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
-    + '<br>' + self.phone + '<br>' + '</p>' + 
-    '</div>' + self.website + '</div>';
-    console.log(contentString);
+    console.log(self.contentString);
     infoWindow.setContent(self.contentString);
     infoWindow.open(map,self.marker);
   })
