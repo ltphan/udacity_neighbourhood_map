@@ -51,10 +51,6 @@ function LocationModel(location) {
   self.phone = location.contact.formattedPhone;
   self.venueID = location.id;
   self.website = location.location.url;
-  self.infoWindow = new google.maps.InfoWindow({
-    title: self.name,
-    content: contentString
- })
   self.marker = new google.maps.Marker({
     map: map,
     position: self.position,
@@ -69,14 +65,18 @@ function LocationModel(location) {
   }
 
   var contentString = function(location) {
-    return (
-    '<div id="content">' + '<div id="siteNotice">' +
-    '</div>' + 
-    '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
-    '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.zip 
-    + '<br>' + self.phone + '<br>' + '</p>' + 
-    '</div>' + self.website + '</div>'); 
+    
   }
+
+  self.infoWindow = new google.maps.InfoWindow({
+   content: '<div id="content">' + '<div id="siteNotice">' +
+   '</div>' + 
+   '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
+   '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.zip 
+   + '<br>' + self.phone + '<br>' + '</p>' + 
+   '</div>' + self.website + '</div>'
+ })
+
 
 
   // set markers on the Google map alongside with its information content
