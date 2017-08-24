@@ -28,11 +28,19 @@ h1 {
   margin: 25px 20px 5px 80px;
   text-align: left;
   width: 340px;
+  z-index: -1;
+}
+
+#listing-name {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .informationWindow-container {
   height: 100%;
   position: relative;
+  z-index: 200;
+
 }
 
 #map {
