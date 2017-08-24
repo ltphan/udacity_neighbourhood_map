@@ -12,7 +12,7 @@ function mapError() {
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 49.245, lng: -123.1207375},
-    zoom: 16,
+    zoom: 15,
     mapTypeControl: false
   });
   infoWindow = new google.maps.InfoWindow();
@@ -20,7 +20,7 @@ function initMap() {
 
   }
 
-
+// retrieving locations from Foursquare API 
   function fourSquareCalls() {
     var url = 'https://api.foursquare.com/v2/venues/search?ll=49.245,-123.1207375&client_id=F3T5F3US0WH4QBJTBSGSA2WIMCTUIXPECQK2RZXRQ01N1QW4&client_secret=CACMXCC2LGMQKBIJCDJJD3ZRGKIOPFVFKPQC2IXWS3NFNJUV&v=20170822&limit=40';
       
@@ -51,6 +51,7 @@ function LocationModel(location) {
   self.zip = location.location.postalCode;
   self.phone = location.contact.formattedPhone;
   self.venueID = location.id;
+  self.website = location.location.url;
   self.marker = new google.maps.Marker({
     map: map,
     position: self.position,
@@ -58,16 +59,17 @@ function LocationModel(location) {
     animation: google.maps.Animation.DROP
   })
   markers.push(self.marker);
-  //self.location[i].marker = self.marker
   
-  // self.infoWindow = new google.maps.InfoWindow({
-  //   return 
-  // });
+ // setting content window for each location that includes name, address, phone,
+ // state, zip, and website 
+ self.infoWindow = new google.maps.InfoWindow({
 
-  // set markers on the Google map
+ })
+
+  // set markers on the Google map alongside with its information content
   self.marker.addListener('click', function() {
     infoWindow.setContent(self.name);
-    infoWindow.open(map,this);
+    infoWindow.open(map,self.marker);
   })
 
 
@@ -81,6 +83,7 @@ var ViewModel = function(LocationModel) {
 
     // filtering the list of locations based on user's input
     self.filteredList = ko.computed(function() {
+      // toLowerCase doesn't work, but it does for line 94??
       var filter = self.query();
       if (!filter) {
         self.locationList().forEach(function(location) {
@@ -90,7 +93,7 @@ var ViewModel = function(LocationModel) {
         });
         return self.locationList()
       } else {
-        return ko.utils.arrayFilter(self.filteredList(), function(location) {
+        return ko.utils.arrayFilter(self.locationList(), function(location) {
           if (location.name.toLowerCase().indexOf(filter) != -1 ) {
             location.marker.setVisible(true);
             return true;
