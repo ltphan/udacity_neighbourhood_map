@@ -29,7 +29,6 @@ function initMap() {
       dataType: "json",
       url: url
     }).done(function(data) {
-      console.log(data);
       var locations = data.response.venues;
       locations.forEach(function(location, l) {
       vm.locationList.push(new LocationModel(location));
@@ -53,6 +52,7 @@ function LocationModel(location) {
   self.venueID = location.id;
   self.website = location.location.url;
   self.infoWindow = new google.maps.InfoWindow({
+    title: self.name,
     content: contentString
  })
   self.marker = new google.maps.Marker({
@@ -64,7 +64,8 @@ function LocationModel(location) {
   markers.push(self.marker);
   
   var website = function(location) {
-    return website = '<a href="' + self.website + '"taget="_blank">Visit Website</a>' + '<br>';
+    return self.website = '<a href="' + self.website + '"target="_blank">Visit Website</a>' + '<br>';
+    console.log(website);
   }
 
   var contentString = function(location) {
@@ -74,7 +75,7 @@ function LocationModel(location) {
     '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
     '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.zip 
     + '<br>' + self.phone + '<br>' + '</p>' + 
-    '</div>' + website + '</div>'); 
+    '</div>' + self.website + '</div>'); 
   }
 
 
