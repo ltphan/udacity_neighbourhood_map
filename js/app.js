@@ -47,7 +47,7 @@ function LocationModel(location) {
   self.position = {lat: location.location.lat, lng: location.location.lng};
   self.address = location.location.city;
   self.state = location.location.state;
-  self.zip = location.location.postalCode;
+  self.postalCode = location.location.postalCode;
   self.phone = location.contact.formattedPhone;
   self.venueID = location.id;
   self.website = location.location.url;
@@ -68,21 +68,36 @@ function LocationModel(location) {
     
   }
 
-  self.infoWindow = new google.maps.InfoWindow({
-   content: '<div id="content">' + '<div id="siteNotice">' +
-   '</div>' + 
-   '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
-   '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.zip 
-   + '<br>' + self.phone + '<br>' + '</p>' + 
-   '</div>' + self.website + '</div>'
- })
+  // creating location information content with name, 
+  // address, state, postal code, phone, and website 
+//   self.infoWindow = new google.maps.InfoWindow({
+//    content: '<div id="content">' + '<div id="siteNotice">' +
+//    '</div>' + 
+//    '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
+//    '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
+//    + '<br>' + self.phone + '<br>' + '</p>' + 
+//    '</div>' + self.website + '</div>'
+//  })
 
+  self.contentString = '<div id="content">' + '<div id="siteNotice">' +
+      '</div>' + 
+      '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
+      '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
+      + '<br>' + self.phone + '<br>' + '</p>' + 
+      '</div>' + self.website + '</div>'
 
+  self.infoWindow = new google.maps.InfoWindow({content: self.contentString});
 
   // set markers on the Google map alongside with its information content
   self.marker.addListener('click', function() {
+    self.contentString = '<div id="content">' + '<div id="siteNotice">' +
+    '</div>' + 
+    '<h1 id="firstHEading" class="firstHeading">' + self.name + '</h1>' +
+    '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
+    + '<br>' + self.phone + '<br>' + '</p>' + 
+    '</div>' + self.website + '</div>';
     console.log(contentString);
-    infoWindow.setContent(self.infoWindow[0]);
+    infoWindow.setContent(self.contentString);
     infoWindow.open(map,self.marker);
   })
 
