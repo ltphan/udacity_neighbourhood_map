@@ -83,20 +83,22 @@ var ViewModel = function(LocationModel) {
     self.filteredList = ko.computed(function() {
       var filter = self.query();
       if (!filter) {
-        self.locationList().forEach(function(location) {
+        self.filteredList().forEach(function(location) {
           if (location.marker) {
             location.marker.setVisible(true);
           }
         });
         return self.locationList()
       } else {
-        return ko.utils.arrayFilter(self.locationList(), function(location) {
-          if (location.marker) {
+        return ko.utils.arrayFilter(self.filteredList(), function(location) {
+          if (location.name.toLowerCase().indexOf(filter) != -1 ) {
             location.marker.setVisible(true);
+            return true;
           } else {
             location.marker.setVisible(false);
             return false;
           }
+          return location.marker;
         });
       }
     }, self.animateMarker = function(location){
