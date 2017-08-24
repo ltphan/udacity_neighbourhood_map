@@ -83,7 +83,7 @@ var ViewModel = function(LocationModel) {
     self.filteredList = ko.computed(function() {
       var filter = self.query();
       if (!filter) {
-        self.filteredList().forEach(function(location) {
+        self.locationList().forEach(function(location) {
           if (location.marker) {
             location.marker.setVisible(true);
           }
