@@ -1,7 +1,4 @@
 var map;
-var infoWindow;
-var markers = [];
-
 
 // error message if the Google maps page does not load
 function mapError() {
@@ -15,7 +12,6 @@ function initMap() {
     zoom: 15,
     mapTypeControl: false
   });
-  infoWindow = new google.maps.InfoWindow();
   fourSquareCalls();
 
   }
@@ -57,7 +53,6 @@ function LocationModel(location) {
     title: self.name,
     animation: google.maps.Animation.DROP
   })
-  markers.push(self.marker);
   
   // var website = function(location) {
   //   return self.website = '<a href="' + self.website + '"target="_blank">Visit Website</a>' + '<br>';
@@ -68,7 +63,7 @@ function LocationModel(location) {
       '</div>' + 
       '<h1 id="firstHeading" class="firstHeading">' + self.name + '</h1>' +
       '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
-      + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>'
+      + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>';
       //'</div>' + self.website + '</div>'
 
   self.infoWindow = new google.maps.InfoWindow({content: self.contentString});
@@ -106,12 +101,13 @@ var ViewModel = function(LocationModel) {
         return ko.utils.arrayFilter(self.locationList(), function(location) {
           if (location.name.toLowerCase().indexOf(filter) != -1 ) {
             location.marker.setVisible(true);
-            return true;
+            return location;
           } else {
             location.marker.setVisible(false);
-            return false;
+            if (infoWindow.getContent() === location.name) {
+              infoWindow.close();
+            }
           }
-          return location.marker;
         });
       }
     }, self.animateMarker = function(location){

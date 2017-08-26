@@ -31,17 +31,22 @@ h1 {
   z-index: -1;
 }
 
+
+
 #listing-name {
-  display: flex;
-  flex-wrap: wrap;
+  flex: 1;
+  overflow: listing-name;
 }
 
 .informationWindow-container {
   height: 100%;
   position: relative;
-  z-index: 200;
-
+  z-index: -1;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 10px;
 }
+
 
 #map {
   bottom: 0px;
