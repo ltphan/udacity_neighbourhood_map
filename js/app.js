@@ -72,9 +72,9 @@ function LocationModel(location) {
 
   // set markers on the Google map alongside with its information content
   self.marker.addListener('click', function() {
-    console.log(self.contentString);
-    infoWindow.setContent(self.contentString);
-    infoWindow.open(map,self.marker);
+    console.log(vm.locationList());
+    self.infoWindow.setContent(self.contentString);
+    self.infoWindow.open(map,self.marker);
   })
 
 
@@ -89,6 +89,11 @@ var ViewModel = function(LocationModel) {
     // filtering the list of locations based on user's input
     self.filteredList = ko.computed(function() {
       // toLowerCase doesn't work, but it does for line 94??
+
+      self.locationList().forEach(function(location) {
+        location.infoWindow.close();
+      });
+
       var filter = self.query();
       if (!filter) {
         self.locationList().forEach(function(location) {
@@ -99,13 +104,17 @@ var ViewModel = function(LocationModel) {
         return self.locationList()
       } else {
         return ko.utils.arrayFilter(self.locationList(), function(location) {
+         // console.log(location);
           if (location.name.toLowerCase().indexOf(filter) != -1 ) {
             location.marker.setVisible(true);
             return location;
           } else {
             location.marker.setVisible(false);
-            if (infoWindow.getContent() === location.name) {
-              infoWindow.close();
+            //console.log(location.infoWindow.getContent())
+            //console.log(location.name);
+            if (location.infoWindow.getContent() === location.name) {
+              //console.log("close infoWindowb");
+                location.infoWindow.close();
             }
           }
         });
