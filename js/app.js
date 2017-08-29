@@ -1,4 +1,5 @@
 var map;
+var infoWindow;
 
 // error message if the Google maps page does not load
 function mapError() {
@@ -13,6 +14,7 @@ function initMap() {
     mapTypeControl: false
   });
   fourSquareCalls();
+  infoWindow = new google.maps.InfoWindow();
 
   }
 
@@ -39,12 +41,12 @@ function initMap() {
 // properties, and information window for each location
 function LocationModel(location) {
   var self = this;
-  self.name = location.name;
+  self.name = location.name? location.name : "";
   self.position = {lat: location.location.lat, lng: location.location.lng};
-  self.address = location.location.city;
-  self.state = location.location.state;
-  self.postalCode = location.location.postalCode;
-  self.phone = location.contact.formattedPhone;
+  self.address = location.location.city ? location.location.city : "";
+  self.state = location.location.state? location.location.state : "No address available";
+  self.postalCode = location.location.postalCode? location.location.postalCode : "";
+  self.phone = location.contact.formattedPhone? location.contact.formattedPhone : "";
   self.venueID = location.id;
   self.website = location.location.url;
   self.marker = new google.maps.Marker({
@@ -66,15 +68,11 @@ function LocationModel(location) {
       + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>';
       //'</div>' + self.website + '</div>'
 
-  self.infoWindow = new google.maps.InfoWindow({content: self.contentString});
-
-  
-
   // set markers on the Google map alongside with its information content
   self.marker.addListener('click', function() {
     console.log(vm.locationList());
-    self.infoWindow.setContent(self.contentString);
-    self.infoWindow.open(map,self.marker);
+    infoWindow.setContent(self.contentString);
+    infoWindow.open(map,self.marker);
   })
 
 
@@ -85,14 +83,19 @@ var ViewModel = function(LocationModel) {
     var self = this;
     self.query = ko.observable();
     self.locationList = ko.observableArray([]);
+    self.locationClick = function(location) {
+      google.maps.event.trigger(location.marker, 'click');
+    }
+
+
 
     // filtering the list of locations based on user's input
     self.filteredList = ko.computed(function() {
       // toLowerCase doesn't work, but it does for line 94??
 
-      self.locationList().forEach(function(location) {
-        location.infoWindow.close();
-      });
+      // self.locationList().forEach(function(location) {
+      //   location.infoWindow.close();
+      // });
 
       var filter = self.query();
       if (!filter) {
@@ -104,18 +107,14 @@ var ViewModel = function(LocationModel) {
         return self.locationList()
       } else {
         return ko.utils.arrayFilter(self.locationList(), function(location) {
-         // console.log(location);
           if (location.name.toLowerCase().indexOf(filter) != -1 ) {
             location.marker.setVisible(true);
             return location;
           } else {
             location.marker.setVisible(false);
-            //console.log(location.infoWindow.getContent())
-            //console.log(location.name);
-            if (location.infoWindow.getContent() === location.name) {
-              //console.log("close infoWindowb");
-                location.infoWindow.close();
-            }
+            // if (location.infoWindow.getContent() === location.name) {
+            infoWindow.close();
+            // }
           }
         });
       }

@@ -40,8 +40,6 @@ h1 {
   z-index: 1;
 }
 
-
-
 #listing-name {
   flex: 1;
   overflow: listing-name;
@@ -49,6 +47,7 @@ h1 {
 
 .informationWindow-container {
   height: 100%;
+  width: 300px;
   position: relative;
   z-index: 1;
   display: flex;

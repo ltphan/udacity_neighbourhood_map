@@ -4,12 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 	<title>Neighborhood Map Project</title>
 </head>
 <body>
-    <div class="container">
+
     <h1> Vancouver Listings </h1>
     <div class="sidebar">
           <div class="input-group">
@@ -19,12 +18,12 @@
 
     <div class="informationWindow-container">
         <ul class="location-list" data-bind="foreach: filteredList">
-            <li class="location" data-bind:"visible: locationList">
+            <li class="location" data-bind:"visible: locationList, click: $root.locationClick">
                 <div class="listing-name" data-bind="text: name"></div>
             </li>
         </ul>
     </div>
-</div>
+
 
     <div class="google-map-wrapper">
         <div id="map"></div>
