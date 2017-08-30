@@ -54,18 +54,14 @@ function LocationModel(location) {
     position: self.position,
     title: self.name,
     animation: google.maps.Animation.DROP
-  })
+  });
   
   // var website = function(location) {
   //   return self.website = '<a href="' + self.website + '"target="_blank">Visit Website</a>' + '<br>';
   //   console.log(website);
   // }
 
-  self.contentString = '<div id="content">' + '<div id="siteNotice">' +
-      '</div>' + 
-      '<h1 id="firstHeading" class="firstHeading">' + self.name + '</h1>' +
-      '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode 
-      + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>';
+  self.contentString = '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h1 id="firstHeading" class="firstHeading">' + self.name + '</h1>' + '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>';
       //'</div>' + self.website + '</div>'
 
   // set markers on the Google map alongside with its information content
@@ -85,7 +81,7 @@ var ViewModel = function(LocationModel) {
     self.locationList = ko.observableArray([]);
     self.locationClick = function(location) {
       google.maps.event.trigger(location.marker, 'click');
-    }
+    };
 
 
 
@@ -104,7 +100,7 @@ var ViewModel = function(LocationModel) {
             location.marker.setVisible(true);
           }
         });
-        return self.locationList()
+        return self.locationList();
       } else {
         return ko.utils.arrayFilter(self.locationList(), function(location) {
           if (location.name.toLowerCase().indexOf(filter) != -1 ) {
@@ -121,7 +117,7 @@ var ViewModel = function(LocationModel) {
     }, self.animateMarker = function(location){
       google.maps.event.trigger(location.marker, 'click');
     });
-  }
+  };
 
   var vm = new ViewModel();
 
