@@ -32,9 +32,11 @@ h1 {
 .input-group {
   background: #fff;
   height: 100%;
+  width: 70px;
   line-height: 35px;
-  padding: 10px 10px 30px 10px;
-  margin: 25px 20px 5px 80px;
+  padding: 0;
+  margin-top: 10px;
+  margin-left: 40px;
   text-align: left;
   width: 340px;
   z-index: 1;
@@ -46,13 +48,14 @@ h1 {
 }
 
 .informationWindow-container {
-  height: 100%;
-  width: 300px;
+  height: 30%;
+  width: 30%;
   position: relative;
   z-index: 1;
   display: flex;
   flex-flow: row wrap;
   padding: 10px;
+  margin: 0;
 }
 
 

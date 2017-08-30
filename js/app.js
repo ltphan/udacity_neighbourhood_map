@@ -36,19 +36,17 @@ function initMap() {
     });
   }
 
-
 // location constructor that includes setting the markers, defines location
 // properties, and information window for each location
 function LocationModel(location) {
   var self = this;
   self.name = location.name? location.name : "";
   self.position = {lat: location.location.lat, lng: location.location.lng};
-  self.address = location.location.city ? location.location.city : "";
-  self.state = location.location.state? location.location.state : "No address available";
+  self.address = location.location.city ? location.location.city : "No address available";
+  self.state = location.location.state? location.location.state : "";
   self.postalCode = location.location.postalCode? location.location.postalCode : "";
   self.phone = location.contact.formattedPhone? location.contact.formattedPhone : "";
   self.venueID = location.id;
-  self.website = location.location.url;
   self.marker = new google.maps.Marker({
     map: map,
     position: self.position,
@@ -56,22 +54,18 @@ function LocationModel(location) {
     animation: google.maps.Animation.DROP
   });
   
-  // var website = function(location) {
-  //   return self.website = '<a href="' + self.website + '"target="_blank">Visit Website</a>' + '<br>';
-  //   console.log(website);
-  // }
-
-  self.contentString = '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h1 id="firstHeading" class="firstHeading">' + self.name + '</h1>' + '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + ', ' + self.postalCode + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>';
-      //'</div>' + self.website + '</div>'
+  self.contentString = '<div id="content">' + '<div id="siteNotice">' + '</div>' + '<h1 id="firstHeading" class="firstHeading">' + self.name + '</h1>' + '<div id="bodyContent">' + '<p>' +  self.address + ', ' + self.state + '<br>' + self.postalCode + '<br>' + self.phone + '<br>' + '</p>' + '</div>' + '</div>';
 
   // set markers on the Google map alongside with its information content
   self.marker.addListener('click', function() {
     console.log(vm.locationList());
     infoWindow.setContent(self.contentString);
     infoWindow.open(map,self.marker);
-  })
-
-
+    self.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function() {
+      self.marker.setAnimation(null);
+    }, 1400);
+  });
 }
 
 // displaying the points on Google Maps
@@ -79,20 +73,13 @@ var ViewModel = function(LocationModel) {
     var self = this;
     self.query = ko.observable();
     self.locationList = ko.observableArray([]);
+    
     self.locationClick = function(location) {
       google.maps.event.trigger(location.marker, 'click');
     };
 
-
-
     // filtering the list of locations based on user's input
     self.filteredList = ko.computed(function() {
-      // toLowerCase doesn't work, but it does for line 94??
-
-      // self.locationList().forEach(function(location) {
-      //   location.infoWindow.close();
-      // });
-
       var filter = self.query();
       if (!filter) {
         self.locationList().forEach(function(location) {
@@ -108,9 +95,7 @@ var ViewModel = function(LocationModel) {
             return location;
           } else {
             location.marker.setVisible(false);
-            // if (location.infoWindow.getContent() === location.name) {
             infoWindow.close();
-            // }
           }
         });
       }
