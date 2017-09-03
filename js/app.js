@@ -104,6 +104,14 @@ var ViewModel = function(LocationModel) {
     });
   };
 
+  var menu = document.querySelector('#showList');
+  var drawer = document.querySelector('#drawer');
+
+  menu.addEventListener('click', function(e) {
+    drawer.classList.toggle('open');
+    e.stopPropagation();
+  });
+
   var vm = new ViewModel();
 
   ko.applyBindings(vm);

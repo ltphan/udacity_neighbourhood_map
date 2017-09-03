@@ -8,27 +8,35 @@
 	<title>Neighborhood Map Project</title>
 </head>
 <body>
-    <div class="sidebar">
-    <h1> Vancouver Listings </h1>
-    <div class="sidebar">
-          <div class="input-group">
-            <input id="filter-text-box" class="text-input-box" type="text" class="form-control" placeholder="Search" data-bind="textInput: query, valueUpdate: 'keydown'" aria-label="Search for...">
-          </div>
-      </div>
+    <div class="sidebar" id="drawer">
+        <h1> Vancouver Listings </h1>
+            <div class="sidebar">
+            <div class="input-group">
+            <input id="filter-text-box" class="text-input-box" type="text" class="form-control" placeholder="Search" data-bind="textInput: query" aria-label="Search for...">
+            </div>
+        </div>
 
-    <div class="informationWindow-container">
-        <ul class="location-list" data-bind="foreach: filteredList">
-            <li class="location" data-bind:"visible: locationList, click: $parent.locationClick">
+        <div class="informationWindow-container">
+            <ul class="location-list" data-bind="foreach: filteredList">
+                <li class="location" data-bind="click: $parent.locationClick">
                 <div class="listing-name" data-bind="text: name"></div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 
+    <div class="hamburger-icon" id="showList">
+        <a id="menu">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+             </svg>
+        </a>
+    </div>
 
     <div class="google-map-wrapper">
         <div id="map"></div>
     </div>
-    </div>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
