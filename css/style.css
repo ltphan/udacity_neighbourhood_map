@@ -39,6 +39,8 @@ body {
   -webkit-transform: translate(0, 0);
   transform: translate(0, 0);
   z-index: 50;
+  overflow: scroll;
+  height: 100%;
 }
 
 h1 {
